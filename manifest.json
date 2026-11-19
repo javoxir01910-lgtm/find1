@@ -1,0 +1,29 @@
+{
+  "name": "Grant Finder — Xalqaro Ta'lim Grantlari",
+  "short_name": "Grant Finder",
+  "description": "155+ saralangan universitet grantlari, xalqaro konferensiyalar, almashinuv dasturlari va qisqa muddatli ilmiy amaliyotlar.",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#090e17",
+  "theme_color": "#4338ca",
+  "categories": [
+    "education",
+    "productivity"
+  ],
+  "icons": [
+    {
+      "src": "icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}

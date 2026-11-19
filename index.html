@@ -1,0 +1,2105 @@
+<!DOCTYPE html>
+<html lang="uz" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>Grant Finder 2.0 — Universitet Grantlari & Vatandoshlar Tajribasi</title>
+  <meta name="description" content="155+ saralangan xalqaro universitet grantlari, xalqaro konferensiyalar, vatandoshlar tajriba videolari, real vaqtli mentorlik chati va AI Mentor platformasi." />
+  <meta name="theme-color" content="#4f46e5" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+  <link rel="manifest" href="manifest.json" />
+  <link rel="apple-touch-icon" href="apple-touch-icon.png" />
+  <link rel="icon" type="image/png" href="favicon.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@600;700&display=swap" rel="stylesheet" />
+
+  <style>
+    :root {
+      --primary: #4f46e5;
+      --primary-hover: #4338ca;
+      --primary-light: #eef2ff;
+      --primary-border: #c7d2fe;
+      --primary-glow: rgba(79, 70, 229, 0.25);
+      --accent: #d97706;
+      --accent-hover: #b45309;
+      --accent-light: #fef3c7;
+      --accent-glow: rgba(217, 119, 6, 0.3);
+      --success: #10b981;
+      --success-light: #d1fae5;
+      --danger: #ef4444;
+      --danger-light: #fee2e2;
+      --bg: #f8fafc;
+      --surface: #ffffff;
+      --surface-subtle: #f1f5f9;
+      --text: #0f172a;
+      --text-muted: #64748b;
+      --text-subtle: #94a3b8;
+      --border: #e2e8f0;
+      --border-focus: #4f46e5;
+      --card-bg: #ffffff;
+      --radius-sm: 8px;
+      --radius-md: 14px;
+      --radius-lg: 22px;
+      --radius-full: 9999px;
+      --shadow-sm: 0 1px 3px rgba(0,0,0,0.06);
+      --shadow-md: 0 4px 14px rgba(0,0,0,0.08);
+      --shadow-lg: 0 12px 30px rgba(0,0,0,0.12);
+      --font-body: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+      --font-heading: 'Space Grotesk', system-ui, -apple-system, sans-serif;
+      --transition: all 0.22s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    [data-theme="dark"] {
+      --bg: #0b1120;
+      --surface: #131c31;
+      --surface-subtle: #1e293b;
+      --text: #f1f5f9;
+      --text-muted: #94a3b8;
+      --text-subtle: #64748b;
+      --border: #1e293b;
+      --border-focus: #6366f1;
+      --card-bg: #131c31;
+      --primary-light: rgba(99, 102, 241, 0.15);
+      --primary-border: rgba(99, 102, 241, 0.35);
+      --shadow-sm: 0 1px 3px rgba(0,0,0,0.4);
+      --shadow-md: 0 4px 14px rgba(0,0,0,0.45);
+      --shadow-lg: 0 12px 30px rgba(0,0,0,0.55);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: var(--font-body);
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      transition: background 0.3s ease, color 0.3s ease;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 1240px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+
+    /* ========================================================
+       SPA VIEWS (BO'LIMLAR O'RTASIDA ISHONCHLI ALMASHINUV)
+       Har bir bo'lim alohida mustaqil sahifa kabi ishlaydi.
+       Pastga tushganda boshqa bo'limlar aralashib ketmaydi!
+       ======================================================== */
+    .app-main-content {
+      flex: 1;
+      padding-bottom: 96px; /* Pastdagi yopishuvchi navigatsiya ostida so'zlar qolib ketmasligi uchun! */
+    }
+    @media (max-width: 768px) {
+      .app-main-content {
+        padding-bottom: 110px; /* Mobilda xavfsiz masofa */
+      }
+    }
+
+    .app-view {
+      display: none;
+      animation: fadeIn 0.25s ease-out;
+    }
+    .app-view.active {
+      display: block;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(6px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ========================================================
+       TOP NAVBAR & HEADER
+       ======================================================== */
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 900;
+      background: var(--surface);
+      border-bottom: 1.5px solid var(--border);
+      box-shadow: var(--shadow-sm);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+    }
+    .header-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 72px;
+      gap: 16px;
+    }
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      cursor: pointer;
+      text-decoration: none;
+      user-select: none;
+    }
+    .brand-icon {
+      width: 44px;
+      height: 44px;
+      border-radius: 14px;
+      background: linear-gradient(135deg, var(--primary), #8b5cf6);
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 800;
+      font-size: 1.25rem;
+      box-shadow: 0 4px 14px var(--primary-glow);
+    }
+    .brand-title {
+      font-family: var(--font-heading);
+      font-size: 1.35rem;
+      font-weight: 800;
+      color: var(--text);
+      line-height: 1.2;
+    }
+    .brand-title span { color: var(--primary); }
+    .brand-curator {
+      font-size: 0.76rem;
+      font-weight: 700;
+      color: var(--text-muted);
+      background: var(--surface-subtle);
+      border: 1px solid var(--border);
+      padding: 4px 10px;
+      border-radius: var(--radius-full);
+      display: none;
+    }
+    @media (min-width: 900px) { .brand-curator { display: inline-block; } }
+
+    /* DESKTOP NAV TABS */
+    .desktop-nav {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      background: var(--surface-subtle);
+      padding: 5px;
+      border-radius: var(--radius-full);
+      border: 1.5px solid var(--border);
+    }
+    @media (max-width: 960px) {
+      .desktop-nav { display: none; }
+    }
+    .nav-tab-btn {
+      padding: 8px 16px;
+      border-radius: var(--radius-full);
+      border: none;
+      background: transparent;
+      color: var(--text-muted);
+      font-weight: 700;
+      font-size: 0.88rem;
+      cursor: pointer;
+      transition: var(--transition);
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      white-space: nowrap;
+    }
+    .nav-tab-btn:hover {
+      color: var(--text);
+      background: rgba(0,0,0,0.04);
+    }
+    [data-theme="dark"] .nav-tab-btn:hover {
+      background: rgba(255,255,255,0.06);
+    }
+    .nav-tab-btn.active {
+      background: linear-gradient(135deg, var(--primary), #6366f1);
+      color: #fff;
+      box-shadow: 0 4px 14px var(--primary-glow);
+    }
+
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    /* OVAL TUGMALAR VA INPUTLAR */
+    .btn-oval { border-radius: var(--radius-full) !important; }
+    .pill-tabs-wrap {
+      display: flex;
+      background: var(--surface-subtle);
+      padding: 5px;
+      border-radius: var(--radius-full);
+      border: 1.5px solid var(--border);
+      margin-bottom: 20px;
+    }
+    .pill-tab-btn {
+      flex: 1;
+      padding: 10px 16px;
+      border-radius: var(--radius-full);
+      border: none;
+      background: transparent;
+      color: var(--text-muted);
+      font-weight: 700;
+      font-size: 0.88rem;
+      cursor: pointer;
+      transition: var(--transition);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      white-space: nowrap;
+    }
+    .pill-tab-btn.active {
+      background: linear-gradient(135deg, var(--primary), #6366f1);
+      color: #fff;
+      box-shadow: 0 4px 14px var(--primary-glow);
+    }
+    .input-oval {
+      width: 100%;
+      padding: 13px 22px;
+      border-radius: var(--radius-full);
+      border: 1.5px solid var(--border);
+      background: var(--bg);
+      color: var(--text);
+      font-size: 0.95rem;
+      outline: none;
+      transition: var(--transition);
+    }
+    .input-oval:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 4px var(--primary-glow);
+    }
+
+    /* TUGMA STILLARI */
+    .btn-primary {
+      padding: 10px 22px;
+      border-radius: var(--radius-full);
+      border: none;
+      background: linear-gradient(135deg, var(--primary), #6366f1);
+      color: #fff;
+      font-weight: 700;
+      font-size: 0.9rem;
+      cursor: pointer;
+      box-shadow: 0 4px 14px var(--primary-glow);
+      transition: var(--transition);
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      text-decoration: none;
+    }
+    .btn-primary:hover {
+      background: linear-gradient(135deg, var(--primary-hover), #4f46e5);
+      transform: translateY(-1px);
+      box-shadow: 0 6px 20px var(--primary-glow);
+    }
+
+    .btn-install {
+      padding: 9px 18px;
+      border-radius: var(--radius-full);
+      border: 1.5px solid var(--accent);
+      background: linear-gradient(135deg, #f59e0b, #d97706);
+      color: #fff;
+      font-weight: 800;
+      font-size: 0.84rem;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      box-shadow: 0 4px 14px rgba(217, 119, 6, 0.35);
+      transition: var(--transition);
+      white-space: nowrap;
+    }
+    .btn-install:hover {
+      background: linear-gradient(135deg, #d97706, #b45309);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba(217, 119, 6, 0.45);
+    }
+
+    .btn-secondary {
+      padding: 9px 20px;
+      border-radius: var(--radius-full);
+      border: 1.5px solid var(--border);
+      background: var(--surface);
+      color: var(--text);
+      font-weight: 700;
+      font-size: 0.88rem;
+      cursor: pointer;
+      transition: var(--transition);
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+    }
+    .btn-secondary:hover {
+      border-color: var(--primary);
+      color: var(--primary);
+      background: var(--surface-subtle);
+    }
+
+    .icon-btn {
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      border: 1.5px solid var(--border);
+      background: var(--surface);
+      color: var(--text);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-size: 1.15rem;
+      transition: var(--transition);
+    }
+    .icon-btn:hover {
+      border-color: var(--primary);
+      transform: rotate(15deg);
+    }
+
+    /* USER AVATAR BUTTON IN HEADER */
+    .user-pill-btn {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      background: var(--surface-subtle);
+      border: 1.5px solid var(--border);
+      padding: 5px 14px 5px 6px;
+      border-radius: var(--radius-full);
+      cursor: pointer;
+      transition: var(--transition);
+    }
+    .user-pill-btn:hover { border-color: var(--primary); }
+    .user-pill-avatar {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--primary), #8b5cf6);
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 800;
+      font-size: 0.85rem;
+    }
+    .user-pill-info {
+      text-align: left;
+      line-height: 1.2;
+    }
+    .user-pill-name {
+      font-size: 0.84rem;
+      font-weight: 800;
+      color: var(--text);
+    }
+    .user-pill-role {
+      font-size: 0.72rem;
+      color: var(--success);
+      font-weight: 700;
+    }
+
+    /* ========================================================
+       STICKY BOTTOM NAVIGATION (TELEFONLAR UCHUN)
+       Rasmdagi bo'lim nomlari telefonda pastga yopishuvchi bo'ladi
+       ======================================================== */
+    .bottom-nav {
+      display: none;
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 68px;
+      background: var(--surface);
+      border-top: 1.5px solid var(--border);
+      box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.08);
+      z-index: 1000;
+      padding-bottom: env(safe-area-inset-bottom);
+      align-items: center;
+      justify-content: space-around;
+    }
+    @media (max-width: 960px) {
+      .bottom-nav {
+        display: flex;
+      }
+    }
+    .bottom-nav-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      color: var(--text-muted);
+      text-decoration: none;
+      font-size: 0.72rem;
+      font-weight: 700;
+      padding: 6px 10px;
+      border-radius: 12px;
+      transition: var(--transition);
+      gap: 4px;
+      border: none;
+      background: transparent;
+      cursor: pointer;
+      flex: 1;
+      max-width: 80px;
+    }
+    .bottom-nav-item .b-icon {
+      font-size: 1.35rem;
+      line-height: 1;
+      transition: var(--transition);
+    }
+    .bottom-nav-item.active {
+      color: var(--primary);
+    }
+    .bottom-nav-item.active .b-icon {
+      transform: translateY(-2px) scale(1.15);
+    }
+    .bottom-nav-item:active {
+      transform: scale(0.92);
+    }
+
+    /* SUZUVCHI O'RNATISH TUGMASI */
+    .floating-install-btn {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      z-index: 950;
+      padding: 12px 22px;
+      border-radius: var(--radius-full);
+      background: linear-gradient(135deg, #f59e0b, #d97706);
+      color: #fff;
+      border: 2px solid rgba(255, 255, 255, 0.45);
+      font-weight: 800;
+      font-size: 0.92rem;
+      cursor: pointer;
+      box-shadow: 0 8px 24px rgba(217, 119, 6, 0.45);
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      transition: var(--transition);
+    }
+    .floating-install-btn:hover {
+      transform: translateY(-3px) scale(1.03);
+      box-shadow: 0 12px 30px rgba(217, 119, 6, 0.6);
+      background: linear-gradient(135deg, #d97706, #b45309);
+    }
+    @media (max-width: 960px) {
+      .floating-install-btn {
+        bottom: 78px; /* Pastki nav paneldan yuqoriroqda */
+        right: 14px;
+        padding: 9px 16px;
+        font-size: 0.82rem;
+      }
+    }
+
+    /* ========================================================
+       HERO BANNER
+       ======================================================== */
+    .hero-banner {
+      background: linear-gradient(180deg, var(--surface-subtle) 0%, var(--bg) 100%);
+      border-bottom: 1.5px solid var(--border);
+      padding: 44px 0 34px 0;
+      text-align: center;
+    }
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 16px;
+      background: var(--surface);
+      border: 1.5px solid var(--border);
+      border-radius: var(--radius-full);
+      font-size: 0.84rem;
+      font-weight: 700;
+      color: var(--primary);
+      margin-bottom: 18px;
+      box-shadow: var(--shadow-sm);
+    }
+    .hero-title {
+      font-family: var(--font-heading);
+      font-size: 2.5rem;
+      font-weight: 800;
+      line-height: 1.25;
+      margin-bottom: 14px;
+      letter-spacing: -0.02em;
+    }
+    .hero-title span {
+      background: linear-gradient(135deg, var(--primary), #8b5cf6);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .hero-desc {
+      font-size: 1.05rem;
+      color: var(--text-muted);
+      max-width: 780px;
+      margin: 0 auto 24px auto;
+    }
+    .hero-actions-row {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    @media (max-width: 680px) {
+      .hero-title { font-size: 1.85rem; }
+      .hero-desc { font-size: 0.95rem; }
+      .hero-actions-row { flex-direction: column; }
+      .hero-actions-row button, .hero-actions-row a { width: 100%; justify-content: center; }
+    }
+
+    /* ========================================================
+       SEARCH & FILTERS FOR GRANTS
+       ======================================================== */
+    .filter-box {
+      background: var(--surface);
+      border: 1.5px solid var(--border);
+      border-radius: 28px;
+      padding: 24px;
+      margin: 28px 0;
+      box-shadow: var(--shadow-sm);
+    }
+    .search-input-wrap {
+      position: relative;
+      margin-bottom: 18px;
+    }
+    .search-input-wrap input {
+      width: 100%;
+      padding: 14px 22px 14px 48px;
+      border-radius: var(--radius-full);
+      border: 1.5px solid var(--border);
+      background: var(--bg);
+      color: var(--text);
+      font-size: 0.96rem;
+      outline: none;
+      transition: var(--transition);
+    }
+    .search-input-wrap input:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 4px var(--primary-glow);
+    }
+    .search-input-wrap .search-icon {
+      position: absolute;
+      left: 18px;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 1.2rem;
+      color: var(--text-muted);
+      pointer-events: none;
+    }
+    .category-pills-row {
+      display: flex;
+      gap: 10px;
+      overflow-x: auto;
+      padding-bottom: 6px;
+      scrollbar-width: none;
+    }
+    .category-pills-row::-webkit-scrollbar { display: none; }
+    .cat-pill-btn {
+      padding: 10px 18px;
+      border-radius: var(--radius-full);
+      border: 1.5px solid var(--border);
+      background: var(--bg);
+      color: var(--text-muted);
+      font-weight: 700;
+      font-size: 0.86rem;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: var(--transition);
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+    }
+    .cat-pill-btn:hover { border-color: var(--primary); color: var(--primary); }
+    .cat-pill-btn.active {
+      background: linear-gradient(135deg, var(--primary), #6366f1);
+      color: #fff;
+      border-color: transparent;
+      box-shadow: 0 4px 14px var(--primary-glow);
+    }
+
+    .sub-filters-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 12px;
+      margin-top: 16px;
+      padding-top: 16px;
+      border-top: 1px solid var(--border);
+    }
+    .select-oval {
+      width: 100%;
+      padding: 11px 18px;
+      border-radius: var(--radius-full);
+      border: 1.5px solid var(--border);
+      background: var(--bg);
+      color: var(--text);
+      font-size: 0.88rem;
+      font-weight: 600;
+      outline: none;
+      cursor: pointer;
+      appearance: auto;
+    }
+
+    /* GRANTS GRID & CARD */
+    .grants-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+      gap: 22px;
+      margin-top: 24px;
+    }
+    @media (max-width: 680px) {
+      .grants-grid { grid-template-columns: 1fr; }
+    }
+    .grant-card {
+      background: var(--card-bg);
+      border: 1.5px solid var(--border);
+      border-radius: 26px;
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      transition: var(--transition);
+      box-shadow: var(--shadow-sm);
+      position: relative;
+    }
+    .grant-card:hover {
+      transform: translateY(-4px);
+      box-shadow: var(--shadow-lg);
+      border-color: var(--primary-border);
+    }
+    .gc-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 12px;
+      margin-bottom: 12px;
+    }
+    .gc-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 0.76rem;
+      font-weight: 800;
+      padding: 4px 12px;
+      border-radius: var(--radius-full);
+      background: var(--primary-light);
+      color: var(--primary);
+    }
+    .gc-badge.conf { background: var(--accent-light); color: var(--accent); }
+    .gc-badge.exchange { background: var(--success-light); color: var(--success); }
+    .btn-fav {
+      background: none;
+      border: none;
+      font-size: 1.3rem;
+      cursor: pointer;
+      color: var(--text-subtle);
+      transition: var(--transition);
+    }
+    .btn-fav.active { color: #ef4444; transform: scale(1.15); }
+
+    .gc-title {
+      font-family: var(--font-heading);
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: var(--text);
+      line-height: 1.35;
+      margin-bottom: 8px;
+    }
+    .gc-univ {
+      font-size: 0.88rem;
+      color: var(--text-muted);
+      margin-bottom: 14px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .gc-meta-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 18px;
+    }
+    .gc-tag {
+      font-size: 0.78rem;
+      font-weight: 700;
+      padding: 4px 10px;
+      border-radius: var(--radius-full);
+      background: var(--surface-subtle);
+      border: 1px solid var(--border);
+      color: var(--text-muted);
+    }
+    .gc-coverage {
+      background: var(--surface-subtle);
+      border-radius: 16px;
+      padding: 10px 14px;
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 18px;
+      border-left: 3.5px solid var(--primary);
+    }
+    .gc-footer {
+      display: flex;
+      gap: 10px;
+      padding-top: 14px;
+      border-top: 1px solid var(--border);
+    }
+    .gc-footer button { flex: 1; }
+
+    /* ========================================================
+       VATANDOSHLAR TAJRIBASI (REELS / STORIES SOCIAL FEED)
+       ======================================================== */
+    .stories-header-card {
+      background: linear-gradient(135deg, rgba(79, 70, 229, 0.08), rgba(217, 119, 6, 0.08));
+      border: 1.5px solid var(--border);
+      border-radius: 28px;
+      padding: 30px;
+      margin-bottom: 28px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+    .stories-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 24px;
+    }
+    .story-card {
+      background: var(--card-bg);
+      border: 1.5px solid var(--border);
+      border-radius: 26px;
+      overflow: hidden;
+      box-shadow: var(--shadow-sm);
+      transition: var(--transition);
+      display: flex;
+      flex-direction: column;
+    }
+    .story-card:hover {
+      transform: translateY(-4px);
+      box-shadow: var(--shadow-lg);
+      border-color: var(--primary-border);
+    }
+    .story-thumbnail {
+      position: relative;
+      height: 200px;
+      background: linear-gradient(135deg, #1e1b4b, #312e81);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      cursor: pointer;
+      overflow: hidden;
+    }
+    .story-thumbnail:hover .play-btn-circle {
+      transform: scale(1.15);
+      background: rgba(255, 255, 255, 0.95);
+      color: var(--primary);
+    }
+    .play-btn-circle {
+      width: 58px;
+      height: 58px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.85);
+      color: #1e1b4b;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.6rem;
+      transition: var(--transition);
+      box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+    }
+    .story-length-badge {
+      position: absolute;
+      bottom: 12px;
+      right: 12px;
+      background: rgba(0,0,0,0.75);
+      color: #fff;
+      padding: 3px 9px;
+      border-radius: 6px;
+      font-size: 0.75rem;
+      font-weight: 700;
+    }
+    .story-country-badge {
+      position: absolute;
+      top: 12px;
+      left: 12px;
+      background: rgba(0,0,0,0.65);
+      color: #fff;
+      padding: 4px 10px;
+      border-radius: var(--radius-full);
+      font-size: 0.78rem;
+      font-weight: 700;
+      backdrop-filter: blur(4px);
+    }
+    .story-body {
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+      justify-content: space-between;
+    }
+    .story-creator-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 14px;
+    }
+    .creator-left {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      cursor: pointer;
+    }
+    .creator-avatar {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 800;
+      font-size: 0.95rem;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+    }
+    .creator-text h4 {
+      font-size: 0.92rem;
+      font-weight: 800;
+      color: var(--text);
+      line-height: 1.2;
+    }
+    .creator-text p {
+      font-size: 0.76rem;
+      color: var(--text-muted);
+    }
+    .btn-sub-toggle {
+      padding: 6px 14px;
+      border-radius: var(--radius-full);
+      border: 1.5px solid var(--primary);
+      background: var(--primary-light);
+      color: var(--primary);
+      font-size: 0.78rem;
+      font-weight: 800;
+      cursor: pointer;
+      transition: var(--transition);
+    }
+    .btn-sub-toggle.subscribed {
+      background: var(--surface-subtle);
+      border-color: var(--border);
+      color: var(--text-muted);
+    }
+    .story-title {
+      font-size: 1.05rem;
+      font-weight: 800;
+      color: var(--text);
+      margin-bottom: 8px;
+      line-height: 1.35;
+      cursor: pointer;
+    }
+    .story-desc {
+      font-size: 0.84rem;
+      color: var(--text-muted);
+      margin-bottom: 16px;
+      line-height: 1.5;
+    }
+    .story-social-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding-top: 12px;
+      border-top: 1px solid var(--border);
+      font-size: 0.82rem;
+      color: var(--text-muted);
+    }
+    .social-actions-left {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+    .social-btn {
+      background: none;
+      border: none;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      color: var(--text-muted);
+      font-weight: 700;
+      font-size: 0.84rem;
+      transition: var(--transition);
+    }
+    .social-btn.liked { color: #ef4444; }
+
+    /* ========================================================
+       CHAT MESSENGER SECTION (CHET ELDAGILAR VA ENDI TOPSHIRUVCHILAR)
+       ======================================================== */
+    .chat-layout {
+      display: grid;
+      grid-template-columns: 320px 1fr;
+      height: 720px;
+      background: var(--surface);
+      border: 1.5px solid var(--border);
+      border-radius: 28px;
+      overflow: hidden;
+      box-shadow: var(--shadow-md);
+      margin: 20px 0;
+    }
+    @media (max-width: 860px) {
+      .chat-layout {
+        grid-template-columns: 1fr;
+        height: 650px;
+      }
+      .chat-sidebar.mobile-hide { display: none; }
+      .chat-main.mobile-hide { display: none; }
+    }
+    .chat-sidebar {
+      background: var(--surface-subtle);
+      border-right: 1.5px solid var(--border);
+      display: flex;
+      flex-direction: column;
+    }
+    .chat-sidebar-header {
+      padding: 18px 20px;
+      border-bottom: 1.5px solid var(--border);
+    }
+    .chat-sidebar-header h3 {
+      font-size: 1.05rem;
+      font-weight: 800;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .chat-channels-list {
+      flex: 1;
+      overflow-y: auto;
+      padding: 10px;
+    }
+    .chat-channel-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 12px 14px;
+      border-radius: 18px;
+      cursor: pointer;
+      margin-bottom: 6px;
+      transition: var(--transition);
+    }
+    .chat-channel-item:hover { background: rgba(0,0,0,0.04); }
+    [data-theme="dark"] .chat-channel-item:hover { background: rgba(255,255,255,0.05); }
+    .chat-channel-item.active {
+      background: var(--surface);
+      border: 1.5px solid var(--primary-border);
+      box-shadow: var(--shadow-sm);
+    }
+    .ch-avatar {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 800;
+      font-size: 0.95rem;
+      flex-shrink: 0;
+      position: relative;
+    }
+    .ch-avatar .online-dot {
+      position: absolute;
+      bottom: 0;
+      right: 0;
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: #10b981;
+      border: 2px solid var(--surface);
+    }
+    .ch-meta { flex: 1; min-width: 0; }
+    .ch-name {
+      font-size: 0.88rem;
+      font-weight: 800;
+      color: var(--text);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .ch-sub {
+      font-size: 0.74rem;
+      color: var(--text-muted);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .chat-main {
+      display: flex;
+      flex-direction: column;
+      background: var(--surface);
+    }
+    .chat-main-header {
+      padding: 14px 20px;
+      border-bottom: 1.5px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .chat-target-info {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .chat-messages-wrap {
+      flex: 1;
+      overflow-y: auto;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+    .chat-msg {
+      max-width: 75%;
+      padding: 12px 18px;
+      border-radius: 22px;
+      font-size: 0.9rem;
+      line-height: 1.5;
+      position: relative;
+    }
+    .chat-msg.received {
+      align-self: flex-start;
+      background: var(--surface-subtle);
+      border: 1px solid var(--border);
+      color: var(--text);
+      border-bottom-left-radius: 4px;
+    }
+    .chat-msg.sent {
+      align-self: flex-end;
+      background: linear-gradient(135deg, var(--primary), #6366f1);
+      color: #fff;
+      border-bottom-right-radius: 4px;
+      box-shadow: 0 4px 14px var(--primary-glow);
+    }
+    .msg-sender-name {
+      font-size: 0.74rem;
+      font-weight: 800;
+      margin-bottom: 3px;
+      color: var(--primary);
+    }
+    .chat-msg.sent .msg-sender-name { color: rgba(255,255,255,0.85); }
+    .msg-time {
+      font-size: 0.68rem;
+      opacity: 0.7;
+      text-align: right;
+      margin-top: 4px;
+    }
+    .chat-input-row {
+      padding: 14px 20px;
+      border-top: 1.5px solid var(--border);
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      background: var(--surface);
+    }
+
+    /* ========================================================
+       SHAXSIY PROFIL & OBUNA BO'LGANLAR BO'LIMI
+       ======================================================== */
+    .profile-hero-card {
+      background: var(--surface);
+      border: 1.5px solid var(--border);
+      border-radius: 30px;
+      padding: 34px;
+      margin-bottom: 28px;
+      box-shadow: var(--shadow-sm);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+      flex-wrap: wrap;
+    }
+    .profile-avatar-wrap {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--primary), #8b5cf6);
+      color: #fff;
+      font-size: 2rem;
+      font-weight: 800;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 8px 24px var(--primary-glow);
+    }
+    .sub-channel-card {
+      background: var(--surface);
+      border: 1.5px solid var(--border);
+      border-radius: 22px;
+      padding: 18px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      margin-bottom: 12px;
+      transition: var(--transition);
+      box-shadow: var(--shadow-sm);
+    }
+    .sub-channel-card:hover {
+      border-color: var(--primary-border);
+      transform: translateX(4px);
+    }
+    .sub-actions-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    /* ========================================================
+       MODALS
+       ======================================================== */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(15, 23, 42, 0.7);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      z-index: 2000;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+    }
+    .modal-overlay.active { display: flex; animation: fadeIn 0.2s ease; }
+    .modal-dialog {
+      background: var(--surface);
+      border: 1.5px solid var(--border);
+      border-radius: 32px;
+      width: 100%;
+      max-width: 580px;
+      padding: 32px;
+      box-shadow: var(--shadow-lg);
+      position: relative;
+      max-height: 90vh;
+      overflow-y: auto;
+    }
+    .btn-modal-close {
+      position: absolute;
+      top: 18px;
+      right: 18px;
+      background: none;
+      border: none;
+      font-size: 1.4rem;
+      color: var(--text-muted);
+      cursor: pointer;
+    }
+    .btn-modal-close:hover { color: var(--text); }
+
+    /* TOAST */
+    .toast-tray {
+      position: fixed;
+      bottom: 24px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 9999;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      pointer-events: none;
+    }
+    @media (max-width: 960px) {
+      .toast-tray { bottom: 84px; }
+    }
+    .toast-item {
+      background: #0f172a;
+      color: #fff;
+      padding: 12px 24px;
+      border-radius: var(--radius-full);
+      font-size: 0.9rem;
+      font-weight: 700;
+      box-shadow: var(--shadow-lg);
+      border: 1px solid rgba(255,255,255,0.2);
+      animation: toastIn 0.25s ease-out;
+      pointer-events: auto;
+    }
+    @keyframes toastIn {
+      from { opacity: 0; transform: translateY(12px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ========================================================
+       KIRISH VA RO'YXATDAN O'TISH SHLYUZI (GATEKEEPER)
+       3 xil rol:
+       1. 👑 Admin (Hamma narsa ochiq va boshqaruv)
+       2. 🎓 Chet elda o'qiyotgan talaba (Video yuklash va tajriba ulashish huquqi)
+       3. 🎯 Endi o'qishga topshiradigan izlanuvchi (Video yuklash yopiq, chat va grantlar ochiq)
+       ======================================================== -->
+  <div id="loginGatekeeper" style="display:none; position:fixed; inset:0; z-index:99999; background:rgba(15, 23, 42, 0.85); backdrop-filter:blur(10px); -webkit-backdrop-filter:blur(10px); justify-content:center; align-items:flex-start; padding:32px 16px 60px 16px; overflow-y:auto; -webkit-overflow-scrolling:touch;">
+    <div style="width:100%; max-width:480px; margin:0 auto; background:var(--surface); border:1.5px solid var(--border); border-radius:36px; padding:32px 26px; box-shadow:var(--shadow-lg); text-align:center;">
+      
+      <!-- LOGO -->
+      <div style="width:56px; height:56px; border-radius:18px; background:linear-gradient(135deg, var(--primary), #8b5cf6); color:#fff; font-size:1.6rem; font-weight:800; display:flex; align-items:center; justify-content:center; margin:0 auto 10px auto; box-shadow:0 8px 24px var(--primary-glow);">
+        GF
+      </div>
+      <h2 style="font-size:1.45rem; font-weight:800; margin-bottom:2px; font-family:var(--font-heading);">
+        Grant <span style="color:var(--primary);">Finder 2.0</span>
+      </h2>
+      <div style="font-size:0.8rem; color:var(--text-muted); font-weight:600; margin-bottom:16px;">
+        Loyiha Rahbari: <strong>Islamova Maftuna</strong>
+      </div>
+
+      <!-- OVAL TABLAR -->
+      <div class="pill-tabs-wrap" style="margin-bottom:16px;">
+        <button id="gateTabLogin" class="pill-tab-btn active" onclick="switchGateTab('login')">Kirish</button>
+        <button id="gateTabRegister" class="pill-tab-btn" onclick="switchGateTab('register')">Ro'yxatdan O'tish</button>
+        <button id="gateTabQuick" class="pill-tab-btn" onclick="switchGateTab('quick')">⚡ Tezkor Demo</button>
+      </div>
+
+      <!-- FORMA 1: KIRISH (LOGIN) -->
+      <form id="gateLoginForm" onsubmit="handleGateLogin(event)">
+        <div style="background:var(--primary-light); border:1.5px solid var(--primary-border); padding:10px 14px; border-radius:18px; font-size:0.84rem; text-align:left; margin-bottom:16px; color:var(--primary); font-weight:600;">
+          🔑 <strong>Admin hisobi:</strong> Login: <code style="background:var(--surface); padding:2px 8px; border-radius:9999px; font-weight:800;">admin</code> | Parol: <code style="background:var(--surface); padding:2px 8px; border-radius:9999px; font-weight:800;">admin</code>
+        </div>
+
+        <div style="text-align:left; margin-bottom:12px;">
+          <label style="display:block; font-size:0.84rem; font-weight:800; margin-bottom:4px; margin-left:12px;">Login yoki Email</label>
+          <input type="text" id="gateLoginUser" class="input-oval" placeholder="admin" value="admin" required />
+        </div>
+
+        <div style="text-align:left; margin-bottom:18px;">
+          <label style="display:block; font-size:0.84rem; font-weight:800; margin-bottom:4px; margin-left:12px;">Parol</label>
+          <input type="password" id="gateLoginPass" class="input-oval" placeholder="admin" value="admin" required />
+        </div>
+
+        <button type="submit" class="btn-primary btn-oval" style="width:100%; justify-content:center; padding:13px; font-size:1rem; font-weight:800; box-shadow:0 8px 24px var(--primary-glow);">
+          🚀 Portalga Kirish
+        </button>
+      </form>
+
+      <!-- FORMA 2: RO'YXATDAN O'TISH (3 XIL ROL TANLOVI BILAN) -->
+      <form id="gateRegForm" style="display:none;" onsubmit="handleGateRegister(event)">
+        <div style="text-align:left; margin-bottom:14px;">
+          <label style="display:block; font-size:0.84rem; font-weight:800; margin-bottom:6px; margin-left:6px;">1. Maqomingizni (Rolingizni) tanlang:</label>
+          
+          <div style="display:flex; flex-direction:column; gap:8px;">
+            <!-- ROL 2: CHET ELDAGI TALABA -->
+            <label style="display:flex; align-items:flex-start; gap:10px; padding:10px 12px; border:1.5px solid var(--border); border-radius:16px; background:var(--surface-subtle); cursor:pointer;">
+              <input type="radio" name="regRole" value="student_abroad" checked onchange="toggleRegFields()" style="margin-top:3px;" />
+              <div>
+                <strong style="font-size:0.86rem; color:var(--text); display:block;">🎓 Chet elda o'qiyotgan talabaman (Vatandosh)</strong>
+                <span style="font-size:0.75rem; color:var(--text-muted); line-height:1.3; display:block;">Menda grant yutish tajribasi bor, video va maslahatlar ulasha olaman.</span>
+              </div>
+            </label>
+
+            <!-- ROL 3: ENDI TOPSHIRAYOTGAN IZLANUVCHI -->
+            <label style="display:flex; align-items:flex-start; gap:10px; padding:10px 12px; border:1.5px solid var(--border); border-radius:16px; background:var(--surface-subtle); cursor:pointer;">
+              <input type="radio" name="regRole" value="applicant" onchange="toggleRegFields()" style="margin-top:3px;" />
+              <div>
+                <strong style="font-size:0.86rem; color:var(--text); display:block;">🎯 Endi o'qishga topshirmoqchiman (Izlanuvchi)</strong>
+                <span style="font-size:0.75rem; color:var(--text-muted); line-height:1.3; display:block;">Grant izlayapman, talabalar bilan chatda maslahat olmoqchiman.</span>
+              </div>
+            </label>
+
+            <!-- ROL 1: ADMIN -->
+            <label style="display:flex; align-items:flex-start; gap:10px; padding:10px 12px; border:1.5px solid var(--border); border-radius:16px; background:var(--surface-subtle); cursor:pointer;">
+              <input type="radio" name="regRole" value="admin" onchange="toggleRegFields()" style="margin-top:3px;" />
+              <div>
+                <strong style="font-size:0.86rem; color:var(--text); display:block;">👑 Administrator</strong>
+                <span style="font-size:0.75rem; color:var(--text-muted); line-height:1.3; display:block;">Barcha bo'limlarni boshqarish va to'liq tahlil.</span>
+              </div>
+            </label>
+          </div>
+        </div>
+
+        <div style="text-align:left; margin-bottom:10px;">
+          <label style="display:block; font-size:0.82rem; font-weight:800; margin-bottom:3px; margin-left:10px;">Ism va Familiyangiz *</label>
+          <input type="text" id="regName" class="input-oval" style="padding:11px 18px; font-size:0.9rem;" placeholder="Masalan: Maftuna Islamova" required />
+        </div>
+
+        <div style="text-align:left; margin-bottom:10px;">
+          <label style="display:block; font-size:0.82rem; font-weight:800; margin-bottom:3px; margin-left:10px;">Email yoki Login *</label>
+          <input type="text" id="regEmail" class="input-oval" style="padding:11px 18px; font-size:0.9rem;" placeholder="nomingiz@mail.com" required />
+        </div>
+
+        <div style="text-align:left; margin-bottom:12px;">
+          <label style="display:block; font-size:0.82rem; font-weight:800; margin-bottom:3px; margin-left:10px;">Parol *</label>
+          <input type="password" id="regPass" class="input-oval" style="padding:11px 18px; font-size:0.9rem;" placeholder="Kamida 4 belgi" required />
+        </div>
+
+        <!-- MAXSUS QISM: CHET ELDAGI TALABA UCHUN TAJRIBA VA SAVOL QISMI -->
+        <div id="fieldsStudentAbroad" style="background:var(--primary-light); border:1.5px solid var(--primary-border); padding:14px; border-radius:20px; text-align:left; margin-bottom:14px;">
+          <div style="font-size:0.84rem; font-weight:800; color:var(--primary); margin-bottom:8px;">
+            🌍 Chet eldagi ta'lim ma'lumotlari:
+          </div>
+          <div style="margin-bottom:8px;">
+            <label style="display:block; font-size:0.78rem; font-weight:700; margin-bottom:2px;">Qaysi davlat va universitetda o'qiysiz? *</label>
+            <input type="text" id="regUniv" class="input-oval" style="padding:9px 16px; font-size:0.86rem;" placeholder="Masalan: Garvard universiteti, AQSH" value="MIT, AQSH" />
+          </div>
+          <div style="margin-bottom:10px;">
+            <label style="display:block; font-size:0.78rem; font-weight:700; margin-bottom:2px;">Qanday grant yutgansiz? *</label>
+            <input type="text" id="regGrantName" class="input-oval" style="padding:9px 16px; font-size:0.86rem;" placeholder="Masalan: 100% To'liq grant" value="100% Need-based Scholarship" />
+          </div>
+
+          <!-- FOYDALANUVCHI SO'ROVI TALABI BO'YICHA SAVOL -->
+          <div style="background:var(--surface); border:1.5px solid var(--primary-border); border-radius:14px; padding:10px; margin-top:6px;">
+            <strong style="display:block; font-size:0.8rem; color:var(--text); margin-bottom:5px; line-height:1.35;">
+              📢 Boshqalarga ham siz kabi chet elda o'qishi uchun nimalar kerakligi va siz qanday o'qishga kirganingizni tajriba videosi yoki maslahat sifatida ulasha olasizmi?
+            </strong>
+            <label style="display:flex; align-items:flex-start; gap:8px; font-size:0.78rem; color:var(--primary); font-weight:700; cursor:pointer;">
+              <input type="checkbox" id="regShareConsent" checked style="margin-top:2px;" />
+              <span>Ha, albatta! O'z tajribam bilan bajonidil bo'lishaman va video darslar yuklayman.</span>
+            </label>
+          </div>
+        </div>
+
+        <!-- MAXSUS QISM: ENDI TOPSHIRAYOTGAN IZLANUVCHI UCHUN -->
+        <div id="fieldsApplicant" style="display:none; background:var(--surface-subtle); border:1.5px solid var(--border); padding:14px; border-radius:20px; text-align:left; margin-bottom:14px;">
+          <div style="font-size:0.84rem; font-weight:800; color:var(--text); margin-bottom:6px;">
+            🎯 Maqsadingiz:
+          </div>
+          <div style="margin-bottom:8px;">
+            <label style="display:block; font-size:0.78rem; font-weight:700; margin-bottom:2px;">Maqsad qilgan davlatingiz va darajangiz:</label>
+            <input type="text" id="regAppGoal" class="input-oval" style="padding:9px 16px; font-size:0.86rem;" placeholder="Masalan: AQSH yoki Yevropa, Bakalavr" value="AQSH va Yevropa, Magistratura" />
+          </div>
+          <div style="font-size:0.76rem; color:var(--text-muted); line-height:1.4;">
+            ℹ️ <em>Izlanuvchi sifatida siz barcha 155+ grantga topshirishingiz, talabalar bilan chatda maslahat olishingiz va AI Mentor yordamidan foydalanishingiz mumkin. (Video yuklash faqat chet eldagi talabalarga beriladi).</em>
+          </div>
+        </div>
+
+        <button type="submit" class="btn-primary btn-oval" style="width:100%; justify-content:center; padding:13px; font-size:1rem; font-weight:800; box-shadow:0 8px 24px var(--primary-glow);">
+          ✨ Yangi Hisob Yaratish & Kirish
+        </button>
+      </form>
+
+      <!-- FORMA 3: TEZKOR 1 BOSISHDA DEMO ROLLARI -->
+      <div id="gateQuickForm" style="display:none; text-align:left;">
+        <p style="font-size:0.82rem; color:var(--text-muted); margin-bottom:12px; text-align:center;">
+          Istalgan rolda bir zumda tizimni to'liq tekshirishingiz mumkin:
+        </p>
+
+        <button type="button" class="btn-secondary btn-oval" onclick="quickLoginRole('admin')" style="width:100%; justify-content:flex-start; padding:11px 16px; margin-bottom:8px;">
+          <span style="font-size:1.25rem;">👑</span>
+          <div>
+            <strong style="display:block; font-size:0.86rem;">1. Bosh Administrator</strong>
+            <span style="font-size:0.72rem; color:var(--text-muted);">Barcha imkoniyatlar, tahlil hisoboti va boshqaruv</span>
+          </div>
+        </button>
+
+        <button type="button" class="btn-secondary btn-oval" onclick="quickLoginRole('student_abroad')" style="width:100%; justify-content:flex-start; padding:11px 16px; margin-bottom:8px;">
+          <span style="font-size:1.25rem;">🎓</span>
+          <div>
+            <strong style="display:block; font-size:0.86rem;">2. Chet eldagi Talaba (Javohir Sindarov)</strong>
+            <span style="font-size:0.72rem; color:var(--text-muted);">Video yuklash ochiq, mentorlik chati va maslahat</span>
+          </div>
+        </button>
+
+        <button type="button" class="btn-secondary btn-oval" onclick="quickLoginRole('applicant')" style="width:100%; justify-content:flex-start; padding:11px 16px; margin-bottom:14px;">
+          <span style="font-size:1.25rem;">🎯</span>
+          <div>
+            <strong style="display:block; font-size:0.86rem;">3. Endi Topshiruvchi Izlanuvchi</strong>
+            <span style="font-size:0.72rem; color:var(--text-muted);">Grantlar, chatda savol berish (Video yuklash yopiq)</span>
+          </div>
+        </button>
+      </div>
+
+      <!-- O'RNATISH (PWA DOWNLOAD) TUGMASI KIRISH QISMIDA HAM -->
+      <div style="margin-top:16px; padding-top:12px; border-top:1px dashed var(--border);">
+        <button type="button" class="btn-install btn-oval" onclick="triggerPwaInstall()" style="width:100%; justify-content:center; padding:11px 16px; font-size:0.9rem; box-shadow:0 6px 20px rgba(217, 119, 6, 0.35);">
+          📲 Telefon yoki Kompyuterga O'rnatish (PWA)
+        </button>
+      </div>
+
+      <div style="margin-top:12px; font-size:0.76rem; color:var(--text-subtle);">
+        155+ Faol Universitet Grantlari & Vatandoshlar Tajriba Portali
+      </div>
+    </div>
+  </div>
+
+  <!-- ========================================================
+       HEADER / ASOSIY NAVIGATSIYA
+       ======================================================== -->
+  <header>
+    <div class="container header-inner">
+      <div class="brand" onclick="switchView('catalog')">
+        <div class="brand-icon">GF</div>
+        <div>
+          <div class="brand-title">Grant <span>Finder</span></div>
+        </div>
+        <span class="brand-curator">Loyiha Rahbari: Islamova Maftuna</span>
+      </div>
+
+      <!-- DESKTOP TOP NAV TABS (BO'LIMLARGA O'TISH) -->
+      <nav class="desktop-nav">
+        <button class="nav-tab-btn active" data-view="catalog" onclick="switchView('catalog')">
+          <span>🏛️</span> Grantlar Katalogi
+        </button>
+        <button class="nav-tab-btn" data-view="stories" onclick="switchView('stories')">
+          <span>🎬</span> Vatandoshlar Tajribasi
+        </button>
+        <button class="nav-tab-btn" data-view="chat" onclick="switchView('chat')">
+          <span>💬</span> Talabalar Chati
+        </button>
+        <button class="nav-tab-btn" data-view="ai" onclick="switchView('ai')">
+          <span>🤖</span> AI Mentor
+        </button>
+        <button class="nav-tab-btn" id="navAdminTab" data-view="admin" onclick="switchView('admin')" style="display:none; color:var(--accent);">
+          <span>📊</span> Boshqaruv & Tahlil
+        </button>
+      </nav>
+
+      <div class="header-actions">
+        <!-- DOIMIY KO'RINADIGAN O'RNATISH TUGMASI -->
+        <button id="pwaInstallBtn" class="btn-install" onclick="triggerPwaInstall()" title="Telefon yoki kompyuterga o'rnatish">
+          📲 Ilovani O'rnatish
+        </button>
+
+        <button class="icon-btn" id="themeBtn" onclick="toggleTheme()" title="Tungi / Kunduzgi rejim">🌙</button>
+
+        <!-- FOYDALANUVCHI PROFILI TUGMASI -->
+        <div id="userHeaderBtn" class="user-pill-btn" onclick="switchView('profile')">
+          <div class="user-pill-avatar" id="headerAvatar">MI</div>
+          <div class="user-pill-info">
+            <div class="user-pill-name" id="headerUserName">Maftuna</div>
+            <div class="user-pill-role" id="headerUserRole">Loyiha Rahbari</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- ========================================================
+       ASOSIY KONTEYNER (ISOLATED SPA VIEWS)
+       Faqat tanlangan bo'lim ko'rinadi, pastga tushganda aralashmaydi!
+       ======================================================== -->
+  <main class="app-main-content">
+
+    <!-- ========================================================
+         VIEW 1: GRANTLAR KATALOGI
+         ======================================================== -->
+    <section id="view-catalog" class="app-view active">
+      <!-- HERO BANNER -->
+      <div class="hero-banner">
+        <div class="container">
+          <div class="hero-badge">
+            <span>✨</span> 155+ Saralangan Universitet Grantlari, Konferensiyalar va Dasturlar
+          </div>
+          <h1 class="hero-title">
+            Dunyo nufuzli OTMlarida <span>bepul ta'lim oling</span> va arizangizni mukammallashtiring
+          </h1>
+          <p class="hero-desc">
+            Bakalavr, magistratura va PhD grantlari, xalqaro ilmiy konferensiyalar, madaniy almashinuv hamda qisqa muddatli yozgi ilmiy amaliyotlar rasmiy bazasi.
+          </p>
+
+          <div class="hero-actions-row">
+            <button class="btn-install" onclick="triggerPwaInstall()">
+              📲 Telefon / Kompyuterga O'rnatish
+            </button>
+            <button class="btn-primary" onclick="switchView('stories')">
+              🎬 Vatandoshlar Tajribasini Ko'rish
+            </button>
+            <button class="btn-secondary" onclick="switchView('chat')">
+              💬 Talabalar bilan Jonli Chat
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- KATALOG QIDIRUV VA FILTRLAR -->
+      <div class="container" style="padding-top:20px;">
+        <div class="filter-box">
+          <div class="search-input-wrap">
+            <span class="search-icon">🔍</span>
+            <input type="text" id="grantSearch" placeholder="Grant nomi, universitet, davlat yoki soha bo'yicha qidiring..." oninput="handleGrantSearch()" />
+          </div>
+
+          <!-- KATEGORIYALAR -->
+          <div class="category-pills-row" id="categoryPills">
+            <button class="cat-pill-btn active" data-cat="all" onclick="setCategoryFilter('all')">
+              🎓 Barcha Imkoniyatlar (<span id="countAll">155</span>)
+            </button>
+            <button class="cat-pill-btn" data-cat="Universitet Grantlari" onclick="setCategoryFilter('Universitet Grantlari')">
+              🏛️ Universitet Grantlari (<span id="countUniv">50</span>)
+            </button>
+            <button class="cat-pill-btn" data-cat="Xalqaro Konferensiyalar" onclick="setCategoryFilter('Xalqaro Konferensiyalar')">
+              🌐 Xalqaro Konferensiyalar (<span id="countConf">35</span>)
+            </button>
+            <button class="cat-pill-btn" data-cat="Almashinuv Dasturlari" onclick="setCategoryFilter('Almashinuv Dasturlari')">
+              🔄 Almashinuv Dasturlari (<span id="countExch">35</span>)
+            </button>
+            <button class="cat-pill-btn" data-cat="Qisqa Muddatli & Yozgi" onclick="setCategoryFilter('Qisqa Muddatli & Yozgi')">
+              ⏱️ Qisqa Muddatli & Yozgi (<span id="countShort">35</span>)
+            </button>
+          </div>
+
+          <!-- QO'SHIMCHA FILTRLAR -->
+          <div class="sub-filters-grid">
+            <div>
+              <label style="display:block; font-size:0.78rem; font-weight:700; color:var(--text-muted); margin-bottom:4px;">Davlat bo'yicha:</label>
+              <select id="filterCountry" class="select-oval" onchange="applyFilters()">
+                <option value="all">Barcha Davlatlar</option>
+                <option value="AQSH">🇺🇸 AQSH</option>
+                <option value="Buyuk Britaniya">🇬🇧 Buyuk Britaniya</option>
+                <option value="Germaniya">🇩🇪 Germaniya</option>
+                <option value="Kanada">🇨🇦 Kanada</option>
+                <option value="Janubiy Koreya">🇰🇷 Janubiy Koreya</option>
+                <option value="Yaponiya">🇯🇵 Yaponiya</option>
+                <option value="Yevropa">🇪🇺 Yevropa Ittifoqi</option>
+                <option value="Turkiya">🇹🇷 Turkiya</option>
+              </select>
+            </div>
+
+            <div>
+              <label style="display:block; font-size:0.78rem; font-weight:700; color:var(--text-muted); margin-bottom:4px;">Ta'lim darajasi:</label>
+              <select id="filterDegree" class="select-oval" onchange="applyFilters()">
+                <option value="all">Barcha Darajalar</option>
+                <option value="Bakalavriat">Bakalavriat</option>
+                <option value="Magistratura">Magistratura</option>
+                <option value="Doktorantura">Doktorantura / PhD</option>
+                <option value="Tadqiqot">Tadqiqot / Amaliyot</option>
+              </select>
+            </div>
+
+            <div>
+              <label style="display:block; font-size:0.78rem; font-weight:700; color:var(--text-muted); margin-bottom:4px;">IELTS talabi:</label>
+              <select id="filterIelts" class="select-oval" onchange="applyFilters()">
+                <option value="all">Farqi yo'q</option>
+                <option value="required">IELTS talab qilinadi</option>
+                <option value="none">IELTS talab qilinmaydi</option>
+              </select>
+            </div>
+
+            <div style="display:flex; align-items:flex-end;">
+              <button class="btn-secondary btn-oval" onclick="resetFilters()" style="width:100%; justify-content:center; padding:11px;">
+                🔄 Filtrlarni Tozalash
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- STATS BAR -->
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px; font-size:0.88rem; color:var(--text-muted);">
+          <div>
+            Topilgan imkoniyatlar: <strong id="filterStatsCount" style="color:var(--text);">155 ta</strong>
+          </div>
+          <div>
+            <button class="btn-secondary btn-oval" onclick="toggleOnlySaved()" id="btnOnlySaved" style="padding:6px 14px; font-size:0.82rem;">
+              ❤️ Saqlanganlar (<span id="savedCount">0</span>)
+            </button>
+          </div>
+        </div>
+
+        <!-- GRANTLAR RO'YXATI -->
+        <div class="grants-grid" id="grantsContainer">
+          <!-- Dinamik ravishda JS dan to'ldiriladi -->
+        </div>
+
+        <!-- YANADA KO'PROQ YUKLASH -->
+        <div style="text-align:center; margin:36px 0;" id="loadMoreWrap">
+          <button class="btn-secondary btn-oval" id="btnLoadMore" onclick="loadMoreGrants()" style="padding:14px 32px; font-size:0.95rem; font-weight:800;">
+            ⬇️ Yana 12 ta Grantni Ko'rish
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========================================================
+         VIEW 2: VATANDOSHLAR TAJRIBASI (VIDEO SOCIAL FEED)
+         ======================================================== -->
+    <section id="view-stories" class="app-view">
+      <div class="container" style="padding-top:30px;">
+        <!-- HEADER KARTA -->
+        <div class="stories-header-card">
+          <div>
+            <div style="display:inline-flex; align-items:center; gap:6px; background:var(--surface); border:1px solid var(--border); padding:4px 12px; border-radius:var(--radius-full); font-size:0.8rem; font-weight:800; color:var(--accent); margin-bottom:8px;">
+              🎬 Video Tajribalar & Maslahatlar
+            </div>
+            <h2 style="font-family:var(--font-heading); font-size:1.8rem; font-weight:800; margin-bottom:6px;">
+              Vatandoshlar Tajribasi: <span style="color:var(--primary);">Qanday Grant Yutishgan?</span>
+            </h2>
+            <p style="color:var(--text-muted); font-size:0.92rem; max-width:650px;">
+              Chet elning eng nufuzli OTMlarida o'qiyotgan hamyurtlarimizning samimiy video maslahatlari, insho namunalari va qabul sirlari.
+            </p>
+          </div>
+
+          <!-- ROLGA BOG'LIQ VIDEO YUKLASH TUGMASI (TALABA VA ADMIN UCHUN OCHIQ, ABITURIYENT UCHUN YOPIQ!) -->
+          <div id="storyUploadActionWrap">
+            <!-- JS orqali rolga qarab ko'rsatiladi -->
+          </div>
+        </div>
+
+        <!-- FILTR TABS (DAVLATLAR BO'YICHA) -->
+        <div class="pill-tabs-wrap" style="max-width:680px; margin:0 auto 24px auto;">
+          <button class="pill-tab-btn active" data-sregion="all" onclick="filterStoriesRegion('all')">Barchasi</button>
+          <button class="pill-tab-btn" data-sregion="usa" onclick="filterStoriesRegion('usa')">🇺🇸 AQSH (Ivy League)</button>
+          <button class="pill-tab-btn" data-sregion="uk" onclick="filterStoriesRegion('uk')">🇬🇧 Buyuk Britaniya</button>
+          <button class="pill-tab-btn" data-sregion="europe" onclick="filterStoriesRegion('europe')">🇪🇺 Yevropa</button>
+          <button class="pill-tab-btn" data-sregion="asia" onclick="filterStoriesRegion('asia')">🌏 Osiyo</button>
+        </div>
+
+        <!-- VIDEOLAR GRIDI -->
+        <div class="stories-grid" id="storiesContainer">
+          <!-- JS orqali to'ldiriladi -->
+        </div>
+      </div>
+    </section>
+
+    <!-- ========================================================
+         VIEW 3: CHET ELDAGILAR BILAN CHAT MESSENGER (YANGI!)
+         ======================================================== -->
+    <section id="view-chat" class="app-view">
+      <div class="container" style="padding-top:24px;">
+        <div style="margin-bottom:16px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px;">
+          <div>
+            <h2 style="font-family:var(--font-heading); font-size:1.65rem; font-weight:800;">
+              💬 Chet Eldagi Talabalar bilan <span style="color:var(--primary);">Jonli Maslahat Chati</span>
+            </h2>
+            <p style="font-size:0.88rem; color:var(--text-muted);">
+              Chet elda grant yutgan talabalar bilan to'g'ridan-to'g'ri muloqot qiling va savollaringizga real javob oling.
+            </p>
+          </div>
+          <div style="display:flex; gap:8px;">
+            <span class="gc-badge" style="background:#dcfce7; color:#15803d;">
+              🟢 5 ta Talaba Online
+            </span>
+          </div>
+        </div>
+
+        <div class="chat-layout">
+          <!-- CHAP TOMON: SUHBATLAR RO'YXATI -->
+          <div class="chat-sidebar" id="chatSidebar">
+            <div class="chat-sidebar-header">
+              <h3><span>👥</span> Mentorlar va Kanallar</h3>
+            </div>
+            <div class="chat-channels-list" id="chatChannelsList">
+              <!-- JS orqali to'ldiriladi -->
+            </div>
+          </div>
+
+          <!-- O'NG TOMON: XABARLAR VA DIALOG OYNASI -->
+          <div class="chat-main" id="chatMain">
+            <div class="chat-main-header">
+              <div class="chat-target-info" id="chatTargetHeader">
+                <!-- JS orqali to'ldiriladi -->
+              </div>
+              <button class="btn-secondary btn-oval" onclick="viewCurrentMentorProfile()" style="padding:6px 14px; font-size:0.8rem;">
+                👤 Mentor Profili
+              </button>
+            </div>
+
+            <div class="chat-messages-wrap" id="chatMessagesWrap">
+              <!-- Xabarlar JS orqali to'ldiriladi -->
+            </div>
+
+            <!-- XABAR YOZISH MAYDONI -->
+            <form class="chat-input-row" onsubmit="handleSendChatMessage(event)">
+              <input type="text" id="chatMsgInput" class="input-oval" placeholder="Savolingizni yozing (masalan: inshoda nimalarga e'tibor berish kerak?)..." autocomplete="off" required />
+              <button type="submit" class="btn-primary btn-oval" style="padding:12px 22px; font-size:0.9rem; flex-shrink:0;">
+                🚀 Yuborish
+              </button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========================================================
+         VIEW 4: AI MENTOR & HUJJATLAR TAHLILI
+         ======================================================== -->
+    <section id="view-ai" class="app-view">
+      <div class="container" style="padding-top:28px;">
+        <div style="text-align:center; max-width:760px; margin:0 auto 28px auto;">
+          <div style="display:inline-flex; align-items:center; gap:6px; background:var(--primary-light); color:var(--primary); padding:6px 16px; border-radius:var(--radius-full); font-weight:800; font-size:0.84rem; margin-bottom:12px;">
+            🤖 Neyrotarmoq Yordamchisi
+          </div>
+          <h2 style="font-family:var(--font-heading); font-size:2rem; font-weight:800; margin-bottom:8px;">
+            AI Mentor: <span style="color:var(--primary);">Hujjatlaringizni 100 Ballik Shkalada Tekshiring</span>
+          </h2>
+          <p style="color:var(--text-muted); font-size:0.95rem;">
+            Motivatsiya xati (SOP), Akademik Rezyume (CV) va Grant Insholaringizni xalqaro komissiya mezonlari va ATS tizimiga mosligini tahlil qiling.
+          </p>
+        </div>
+
+        <div style="background:var(--surface); border:1.5px solid var(--border); border-radius:30px; padding:32px; box-shadow:var(--shadow-sm); max-width:980px; margin:0 auto;">
+          <div class="pill-tabs-wrap" style="max-width:540px; margin:0 auto 22px auto;">
+            <button class="pill-tab-btn active" id="aiTabSop" onclick="switchAiTab('sop')">📝 Motivatsiya Xati (SOP)</button>
+            <button class="pill-tab-btn" id="aiTabCv" onclick="switchAiTab('cv')">📄 Rezyume (CV)</button>
+            <button class="pill-tab-btn" id="aiTabEssay" onclick="switchAiTab('essay')">✍️ Insho (Essay)</button>
+          </div>
+
+          <div style="margin-bottom:14px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px;">
+            <label style="font-size:0.88rem; font-weight:800; color:var(--text);" id="aiInputLabel">
+              Motivatsiya xati matnini kiriting yoki namuna yuklang:
+            </label>
+            <button type="button" class="btn-secondary btn-oval" onclick="loadSampleText()" style="padding:6px 14px; font-size:0.8rem;">
+              📋 Namuna Matn Yuklash
+            </button>
+          </div>
+
+          <textarea id="aiTextInput" class="input-oval" style="height:190px; border-radius:20px; padding:18px; resize:vertical; font-size:0.92rem; line-height:1.6; margin-bottom:18px;" placeholder="Matnni shu yerga kiriting..."></textarea>
+
+          <button type="button" class="btn-primary btn-oval" onclick="runAiAnalysis()" style="width:100%; justify-content:center; padding:14px; font-size:1.02rem; font-weight:800;">
+            ⚡ AI Bilan Chuqur Tahlil Qilish
+          </button>
+
+          <!-- NATIJALAR BLOKI -->
+          <div id="aiResultsBlock" style="display:none; margin-top:28px; padding-top:24px; border-top:1.5px solid var(--border);">
+            <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:16px; margin-bottom:20px;">
+              <div>
+                <h3 style="font-size:1.25rem; font-weight:800;">Tahlil Xulosasi va Baholash</h3>
+                <p style="font-size:0.84rem; color:var(--text-muted);" id="aiDocTypeLabel">Hujjat turi: Motivatsiya Xati</p>
+              </div>
+              <div style="text-align:right;">
+                <div style="font-size:2.2rem; font-weight:800; color:var(--primary); line-height:1;" id="aiScoreNumber">88 / 100</div>
+                <span class="gc-badge" style="background:#dcfce7; color:#15803d; margin-top:4px;" id="aiScoreBadge">Juda Yuqori Imkoniyat</span>
+              </div>
+            </div>
+
+            <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(280px, 1fr)); gap:18px; margin-bottom:20px;">
+              <div style="background:var(--surface-subtle); border:1px solid var(--border); border-radius:20px; padding:18px;">
+                <h4 style="font-size:0.92rem; font-weight:800; color:#10b981; margin-bottom:8px;">✅ Kuchli Jihatlari:</h4>
+                <ul style="font-size:0.84rem; margin-left:18px; line-height:1.6; color:var(--text);" id="aiStrengthsList">
+                  <li>Maqsadlar aniq va akademik reja bilan bog'langan.</li>
+                  <li>Universitet nufuzi va dastur mosligi ishonarli tushuntirilgan.</li>
+                </ul>
+              </div>
+
+              <div style="background:var(--surface-subtle); border:1px solid var(--border); border-radius:20px; padding:18px;">
+                <h4 style="font-size:0.92rem; font-weight:800; color:#f59e0b; margin-bottom:8px;">⚠️ Yaxshilash Kerak Bo'lgan Nuqtalar:</h4>
+                <ul style="font-size:0.84rem; margin-left:18px; line-height:1.6; color:var(--text);" id="aiImprovementsList">
+                  <li>O'tmishdagi qiyinchiliklarni yengish (STAR usuli) qo'shilsa yanada ta'sirchan bo'ladi.</li>
+                  <li>ATS filtrlari uchun sohaviy kalit so'zlarni boyitish tavsiya etiladi.</li>
+                </ul>
+              </div>
+            </div>
+
+            <div style="background:var(--primary-light); border:1px solid var(--primary-border); border-radius:20px; padding:18px; font-size:0.88rem; color:var(--primary); font-weight:600;" id="aiSummaryAdvice">
+              💡 <strong>Tavsiya:</strong> Mazkur hujjat xalqaro talablarga 88% mos. Tavsiya etilgan tuzatishlar bilan qabul komissiyasida muvaffaqiyat qozonish ehtimoli 95% ga yetadi.
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========================================================
+         VIEW 5: SHAXSIY PROFIL VA SIZ OBUNA BO'LGANLAR (YANGI!)
+         ======================================================== -->
+    <section id="view-profile" class="app-view">
+      <div class="container" style="padding-top:28px;">
+        
+        <!-- PROFIL HERO KARTASI -->
+        <div class="profile-hero-card">
+          <div style="display:flex; align-items:center; gap:20px; flex-wrap:wrap;">
+            <div class="profile-avatar-wrap" id="profAvatarBig">MI</div>
+            <div>
+              <div style="display:flex; align-items:center; gap:10px; margin-bottom:4px;">
+                <h2 style="font-size:1.55rem; font-weight:800;" id="profNameBig">Maftuna Islamova</h2>
+                <span class="gc-badge" id="profRoleBadge" style="background:#e0e7ff; color:#4338ca;">👑 Administrator</span>
+              </div>
+              <p style="color:var(--text-muted); font-size:0.88rem;" id="profEmailBig">admin@grantfinder.uz</p>
+              <div style="display:flex; gap:10px; margin-top:8px; flex-wrap:wrap;">
+                <span class="gc-tag" id="profUnivTag">🏛️ Ta'lim: Magistratura</span>
+                <span class="gc-tag" id="profIeltsTag">🌐 IELTS: 7.5</span>
+                <span class="gc-tag" id="profCountryTag">📍 AQSH & Yevropa</span>
+              </div>
+            </div>
+          </div>
+
+          <div style="display:flex; gap:10px; flex-wrap:wrap;">
+            <button class="btn-secondary btn-oval" onclick="openGatekeeperForRoleChange()">
+              ⚙️ Rolni O'zgartirish
+            </button>
+            <button class="btn-secondary btn-oval" style="color:#ef4444; border-color:#fca5a5;" onclick="logoutUser()">
+              🚪 Chiqish
+            </button>
+          </div>
+        </div>
+
+        <!-- ASOSIY BO'LIM: SIZ OBUNA BO'LGAN VATANDOSHLAR (TALABGA BINOAN!) -->
+        <div style="background:var(--surface); border:1.5px solid var(--border); border-radius:30px; padding:30px; box-shadow:var(--shadow-sm); margin-bottom:28px;">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:18px; flex-wrap:wrap; gap:12px;">
+            <div>
+              <h3 style="font-family:var(--font-heading); font-size:1.35rem; font-weight:800;">
+                🔔 Siz Obuna Bo'lgan Vatandoshlar va Mentorlar (<span id="profileSubCount">0</span>)
+              </h3>
+              <p style="font-size:0.86rem; color:var(--text-muted);">
+                Siz kuzatib borayotgan chet eldagi talabalar ro'yxati. Ular bilan chatda savol-javob qilishingiz yoki videolarini tomosha qilishingiz mumkin.
+              </p>
+            </div>
+            <button class="btn-primary btn-oval" onclick="switchView('stories')" style="font-size:0.84rem; padding:8px 18px;">
+              ➕ Yangi Mentorlarni Topish
+            </button>
+          </div>
+
+          <div id="profileSubscriptionsList">
+            <!-- Dinamik ravishda JS orqali to'ldiriladi -->
+          </div>
+        </div>
+
+        <!-- SEVIMLI VA SAQLANGAN GRANTLAR -->
+        <div style="background:var(--surface); border:1.5px solid var(--border); border-radius:30px; padding:30px; box-shadow:var(--shadow-sm);">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:18px;">
+            <h3 style="font-family:var(--font-heading); font-size:1.35rem; font-weight:800;">
+              ❤️ Saqlab Qo'yilgan Grantlar (<span id="profFavCount">0</span>)
+            </h3>
+            <button class="btn-secondary btn-oval" onclick="switchView('catalog')" style="font-size:0.84rem; padding:8px 18px;">
+              🔍 Katalogga O'tish
+            </button>
+          </div>
+          <div id="profFavContainer" class="grants-grid">
+            <!-- Saqlangan grantlar chiqadi -->
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ========================================================
+         VIEW 6: ADMIN BOSHQARUV PANELI VA TAHLIL HISOBOTI
+         ======================================================== -->
+    <section id="view-admin" class="app-view">
+      <div class="container" style="padding-top:28px;">
+        <div style="background:linear-gradient(135deg, rgba(79, 70, 229, 0.1), rgba(217, 119, 6, 0.1)); border:1.5px solid var(--border); border-radius:30px; padding:32px; margin-bottom:28px;">
+          <h2 style="font-family:var(--font-heading); font-size:1.85rem; font-weight:800; margin-bottom:8px;">
+            👑 Bosh Administrator Boshqaruv Markazi
+          </h2>
+          <p style="color:var(--text-muted); font-size:0.92rem;">
+            Loyiha rahbari <strong>Islamova Maftuna</strong> uchun tizim statistikasi, tahrirlash va grantlar auditi.
+          </p>
+          <div style="display:flex; gap:12px; margin-top:18px; flex-wrap:wrap;">
+            <a href="tahlil_hisoboti.html" class="btn-primary btn-oval" target="_blank" style="padding:10px 20px;">
+              📊 To'liq Tahlil Hisobotini Ochish
+            </a>
+            <button class="btn-secondary btn-oval" onclick="triggerPwaInstall()">
+              📲 PWA O'rnatishni Tekshirish
+            </button>
+          </div>
+        </div>
+
+        <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(220px, 1fr)); gap:18px; margin-bottom:28px;">
+          <div style="background:var(--surface); border:1.5px solid var(--border); border-radius:24px; padding:22px;">
+            <div style="font-size:0.82rem; color:var(--text-muted); font-weight:700;">Jami Grantlar</div>
+            <div style="font-size:2rem; font-weight:800; color:var(--primary); margin:6px 0;">155 ta</div>
+            <div style="font-size:0.78rem; color:var(--success); font-weight:700;">100% Faol va Saralangan</div>
+          </div>
+          <div style="background:var(--surface); border:1.5px solid var(--border); border-radius:24px; padding:22px;">
+            <div style="font-size:0.82rem; color:var(--text-muted); font-weight:700;">Vatandoshlar Videolari</div>
+            <div style="font-size:2rem; font-weight:800; color:var(--accent); margin:6px 0;">6 ta</div>
+            <div style="font-size:0.78rem; color:var(--text-muted);">AQSH, UK, Germaniya, Koreya</div>
+          </div>
+          <div style="background:var(--surface); border:1.5px solid var(--border); border-radius:24px; padding:22px;">
+            <div style="font-size:0.82rem; color:var(--text-muted); font-weight:700;">Chat Muloqotlari</div>
+            <div style="font-size:2rem; font-weight:800; color:#8b5cf6; margin:6px 0;">5 ta Kanal</div>
+            <div style="font-size:0.78rem; color:var(--success); font-weight:700;">Mentorlar Online</div>
+          </div>
+          <div style="background:var(--surface); border:1.5px solid var(--border); border-radius:24px; padding:22px;">
+            <div style="font-size:0.82rem; color:var(--text-muted); font-weight:700;">PWA Holati</div>
+            <div style="font-size:2rem; font-weight:800; color:#10b981; margin:6px 0;">Tayyor</div>
+            <div style="font-size:0.78rem; color:var(--text-muted);">Oflayn Kesh va Manifest faol</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ========================================================
+       STICKY BOTTOM NAVIGATION (TELEFONLAR UCHUN)
+       Rasmdagi bo'lim nomlari telefonda pastga yopishuvchi bo'ladi
+       (pastgi yopishuvchi panel tufayli so'zlar ko'rinmay qolmaydi!)
+       ======================================================== -->
+  <nav class="bottom-nav">
+    <button class="bottom-nav-item active" data-view="catalog" onclick="switchView('catalog')">
+      <span class="b-icon">🏛️</span>
+      <span>Grantlar</span>
+    </button>
+    <button class="bottom-nav-item" data-view="stories" onclick="switchView('stories')">
+      <span class="b-icon">🎬</span>
+      <span>Tajribalar</span>
+    </button>
+    <button class="bottom-nav-item" data-view="chat" onclick="switchView('chat')">
+      <span class="b-icon">💬</span>
+      <span>Chat</span>
+    </button>
+    <button class="bottom-nav-item" data-view="ai" onclick="switchView('ai')">
+      <span class="b-icon">🤖</span>
+      <span>AI Mentor</span>
+    </button>
+    <button class="bottom-nav-item" data-view="profile" onclick="switchView('profile')">
+      <span class="b-icon">👤</span>
+      <span>Profil</span>
+    </button>
+  </nav>
+
+  <!-- SUZUVCHI O'RNATISH TUGMASI -->
+  <button id="floatingInstallBtn" class="floating-install-btn" onclick="triggerPwaInstall()" title="Ilovani o'rnatish">
+    📲 Ilovani O'rnatish
+  </button>
+
+  <!-- ========================================================
+       MODAL: GRANT BATAFSIL MA'LUMOTI
+       ======================================================== -->
+  <div class="modal-overlay" id="detailModal">
+    <div class="modal-dialog">
+      <button class="btn-modal-close" onclick="closeDetailModal()">✕</button>
+      <div id="detailContent">
+        <!-- JS orqali to'ldiriladi -->
+      </div>
+    </div>
+  </div>
+
+  <!-- ========================================================
+       MODAL: ARIZA TOPSHIRISH YO'RIQNOMASI & CHECKLIST
+       ======================================================== -->
+  <div class="modal-overlay" id="guideModal">
+    <div class="modal-dialog" style="max-width:620px;">
+      <button class="btn-modal-close" onclick="closeGuideModal()">✕</button>
+      <div id="guideContent">
+        <!-- JS orqali to'ldiriladi -->
+      </div>
+    </div>
+  </div>
+
+  <!-- ========================================================
+       MODAL: VIDEO PLAYER (VATANDOSHLAR TAJRIBASI REEL SIMULYATORI)
+       ======================================================== -->
+  <div class="modal-overlay" id="videoPlayerModal">
+    <div class="modal-dialog" style="max-width:720px; padding:24px;">
+      <button class="btn-modal-close" onclick="closeVideoPlayerModal()">✕</button>
+      <div id="videoPlayerContent">
+        <!-- JS orqali to'ldiriladi -->
+      </div>
+    </div>
+  </div>
+
+  <!-- ========================================================
+       MODAL: MUALLIF (MENTOR) PROFILI
+       ======================================================== -->
+  <div class="modal-overlay" id="creatorProfileModal">
+    <div class="modal-dialog" style="max-width:600px;">
+      <button class="btn-modal-close" onclick="closeCreatorProfileModal()">✕</button>
+      <div id="creatorProfileContent">
+        <!-- JS orqali to'ldiriladi -->
+      </div>
+    </div>
+  </div>
+
+  <!-- ========================================================
+       MODAL: TAJRIBA VIDEOSI / MASLAHAT YUKLASH (CHET ELDAGI TALABA & ADMIN UCHUN)
+       ======================================================== -->
+  <div class="modal-overlay" id="uploadStoryModal">
+    <div class="modal-dialog" style="max-width:540px;">
+      <button class="btn-modal-close" onclick="closeUploadStoryModal()">✕</button>
+      <div style="text-align:center; margin-bottom:20px;">
+        <div style="width:58px; height:58px; border-radius:50%; background:linear-gradient(135deg, var(--accent), #f59e0b); color:#fff; display:flex; align-items:center; justify-content:center; font-size:1.6rem; margin:0 auto 10px auto;">
+          📹
+        </div>
+        <h3 style="font-size:1.35rem; font-weight:800;">Yangi Video / Maslahat Joylash</h3>
+        <p style="font-size:0.84rem; color:var(--text-muted);">
+          Chet elda o'qish tajribangizni boshqa vatandoshlar bilan ulashing.
+        </p>
+      </div>
+
+      <form onsubmit="handleUploadStorySubmit(event)">
+        <div style="margin-bottom:12px;">
+          <label style="display:block; font-size:0.84rem; font-weight:700; margin-bottom:4px;">Video yoki Mavzu Sarlavhasi *</label>
+          <input type="text" id="upTitle" class="input-oval" placeholder="Masalan: SAT va IELTS dan qanday yuqori ball olganman?" required />
+        </div>
+        <div style="margin-bottom:12px;">
+          <label style="display:block; font-size:0.84rem; font-weight:700; margin-bottom:4px;">Mintaqa / Davlat *</label>
+          <select id="upRegion" class="select-oval">
+            <option value="usa">🇺🇸 AQSH (Amerika)</option>
+            <option value="uk">🇬🇧 Buyuk Britaniya</option>
+            <option value="europe">🇪🇺 Yevropa (Germaniya, Fransiya va h.k.)</option>
+            <option value="asia">🌏 Osiyo (Koreya, Yaponiya)</option>
+          </select>
+        </div>
+        <div style="margin-bottom:14px;">
+          <label style="display:block; font-size:0.84rem; font-weight:700; margin-bottom:4px;">Qisqacha Maslahat va Tavsif *</label>
+          <textarea id="upDesc" class="input-oval" style="height:100px; border-radius:18px; padding:14px; resize:vertical;" placeholder="Qaysi imtihonlarni topshirdingiz, suhbat qanday o'tdi?" required></textarea>
+        </div>
+        <button type="submit" class="btn-primary btn-oval" style="width:100%; justify-content:center; padding:14px; font-weight:800;">
+          🚀 Tarmoqqa Joylash
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- ========================================================
+       MODAL: ILOVANI O'RNATISH (PWA GUIDE MODAL)
+       ======================================================== -->
+  <div class="modal-overlay" id="installAppModal">
+    <div class="modal-dialog" style="max-width:560px; border-radius:34px; padding:32px 28px;">
+      <button class="btn-modal-close" onclick="closeInstallAppModal()">✕</button>
+
+      <div style="text-align:center; margin-bottom:20px;">
+        <div style="width:64px; height:64px; border-radius:20px; background:linear-gradient(135deg, #f59e0b, #d97706); color:#fff; font-size:1.8rem; font-weight:800; display:flex; align-items:center; justify-content:center; margin:0 auto 12px auto; box-shadow:0 8px 24px rgba(217, 119, 6, 0.4);">
+          📲
+        </div>
+        <h2 style="font-size:1.45rem; font-weight:800; margin-bottom:6px;">
+          Grant Finder ilovasini o'rnatish
+        </h2>
+        <p style="font-size:0.88rem; color:var(--text-muted);">
+          Dasturni telefoningiz yoki kompyuteringizga o'rnatib, internet yo'q paytda ham oflayn foydalanishingiz mumkin!
+        </p>
+      </div>
+
+      <!-- OPERATSION TIZIM TABLARI -->
+      <div class="pill-tabs-wrap" style="margin-bottom:18px;">
+        <button id="instTabAndroid" class="pill-tab-btn active" onclick="switchInstallGuide('android')">🤖 Android</button>
+        <button id="instTabIos" class="pill-tab-btn" onclick="switchInstallGuide('ios')">🍏 iPhone / iPad</button>
+        <button id="instTabPc" class="pill-tab-btn" onclick="switchInstallGuide('pc')">💻 Kompyuter (PC)</button>
+      </div>
+
+      <!-- GUIDE: ANDROID -->
+      <div id="guideAndroid" style="background:var(--surface-subtle); border:1.5px solid var(--border); border-radius:24px; padding:20px; margin-bottom:20px;">
+        <h4 style="font-size:0.98rem; font-weight:800; margin-bottom:12px; display:flex; align-items:center; gap:8px;">
+          <span>🤖</span> Android (Chrome / Samsung Internet):
+        </h4>
+        <ol style="margin-left:20px; line-height:1.7; font-size:0.88rem; color:var(--text);">
+          <li>Brauzeringizning yuqori o'ng burchagidagi <strong>uch nuqta (⋮)</strong> belgisini bosing.</li>
+          <li>Chiqadigan menyudan <strong>"Ilovani o'rnatish"</strong> yoki <strong>"Bosh ekranga qo'shish"</strong> tugmasini tanlang.</li>
+          <li><strong>"O'rnatish"</strong> tugmasini bosing — ilova telefoningiz ekraniga alohida dastur sifatida o'rnatiladi.</li>
+        </ol>
+      </div>
+
+      <!-- GUIDE: IOS (IPHONE / IPAD) -->
+      <div id="guideIos" style="display:none; background:var(--surface-subtle); border:1.5px solid var(--border); border-radius:24px; padding:20px; margin-bottom:20px;">
+        <h4 style="font-size:0.98rem; font-weight:800; margin-bottom:12px; display:flex; align-items:center; gap:8px;">
+          <span>🍏</span> iPhone & iPad (Safari Brauzerida):
+        </h4>
+        <ol style="margin-left:20px; line-height:1.7; font-size:0.88rem; color:var(--text);">
+          <li>Safari brauzerining pastki qismidagi <strong>"Ulashish" (Share 📤)</strong> belgisini bosing.</li>
+          <li>Ochilgan oynani pastga surib, <strong>"Bosh ekranga qo'shish" (Add to Home Screen ➕)</strong> bandini bosing.</li>
+          <li>Yuqori o'ng burchakdagi <strong>"Qo'shish" (Add)</strong> tugmasini bosing — ilova bosh sahifangizga qo'shiladi!</li>
+        </ol>
+      </div>
+
+      <!-- GUIDE: PC (WINDOWS & MAC) -->
+      <div id="guidePc" style="display:none; background:var(--surface-subtle); border:1.5px solid var(--border); border-radius:24px; padding:20px; margin-bottom:20px;">
+        <h4 style="font-size:0.98rem; font-weight:800; margin-bottom:12px; display:flex; align-items:center; gap:8px;">
+          <span>💻</span> Kompyuter (Chrome, Edge, Brave, Opera):
+        </h4>
+        <ol style="margin-left:20px; line-height:1.7; font-size:0.88rem; color:var(--text);">
+          <li>Brauzeringizning manzil satri (URL) o'ng tomonidagi <strong>[ ⬇️ O'rnatish ]</strong> belgisini bosing.</li>
+          <li>Yoki brauzer menyusi (⋮) ichidan <strong>"Grant Finder ilovasini o'rnatish..."</strong> ni tanlang.</li>
+          <li>Dastur kompyuteringiz ish stoliga (Desktop) tushadi va mustaqil dastur sifatida ishlaydi.</li>
+        </ol>
+      </div>
+
+      <div style="display:flex; flex-direction:column; gap:10px;">
+        <button id="btnNativePrompt" class="btn-install btn-oval" onclick="triggerNativeInstallPrompt()" style="width:100%; justify-content:center; padding:14px; font-size:1rem; font-weight:800; box-shadow:0 6px 20px rgba(217, 119, 6, 0.4);">
+          ⚡ Bir Bosishda O'rnatish (Brauzer So'rovi)
+        </button>
+        <button type="button" class="btn-secondary btn-oval" onclick="closeInstallAppModal()" style="width:100%; justify-content:center; padding:11px;">
+          Tushunarli, Yopish
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div class="toast-tray" id="toastTray"></div>
+
+  <!-- EXTERNAL NATIVE GRANTS DATABASE (155 TA FAOL GRANTLAR) -->
+  <script src="grants_data.js"></script>
+  <!-- ASOSIY ILOVA LOGIKASI VA SPA ROUTER -->
+  <script src="app_v2.js"></script>
+</body>
+</html>
